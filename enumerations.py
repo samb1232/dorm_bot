@@ -2,6 +2,7 @@ class MenuCallbackButtons:
     MAIN_MENU = "main_menu"
     QUESTION = "question"
     PAYMENT = "payment"
+    PROFILE = "profile"
     INFO = "info"
     KOMENDANT_INFO = "komendant_info"
     KASTELANSHA_INFO = "kastelansha"
@@ -11,7 +12,13 @@ class MenuCallbackButtons:
     GYM_INFO = "gym"
     STUDY_ROOM_INFO = "study"
     STUDSOVET_INFO = "studsovet"
-    NOT_IMPLEMENTED = "_"
+    MANSARDA_INFO = "mansarda"
+
+
+class ChangeProfileCallbackButtons:
+    CHANGE_NAME = "CHANGE_NAME"
+    CHANGE_ROOM = "CHANGE_ROOM"
+    CHANGE_CORPUS = "CHANGE_CORPUS"
 
 
 class ConversationStates:
@@ -20,5 +27,7 @@ class ConversationStates:
     REGISTRATION_FULL_NAME: int = 1
     REGISTRATION_ROOM_NUMBER: int = 2
     REGISTRATION_CORPUS: int = 3
+    CHANGE_FULL_NAME: int = 4
+    CHANGE_ROOM_NUMBER: int = 5
 
-    PAYMENT: int = 4
+    PAYMENT: int = 6

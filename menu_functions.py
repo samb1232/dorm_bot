@@ -1,12 +1,13 @@
-import datetime
 import logging
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes, ConversationHandler
+from telegram.ext import ContextTypes
 
+import change_profile_functions
 import strings
-from enumerations import MenuCallbackButtons, ConversationStates
+import utils
 from database.db_operations import db_helper
+from enumerations import MenuCallbackButtons, ConversationStates, ChangeProfileCallbackButtons
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,9 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         ],
         [
             InlineKeyboardButton(strings.PAYMENT_BUTTON_TEXT, callback_data=MenuCallbackButtons.PAYMENT)
+        ],
+        [
+            InlineKeyboardButton(strings.PROFILE_BUTTON_TEXT, callback_data=MenuCallbackButtons.PROFILE)
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -73,13 +77,20 @@ async def callback_buttons_manager(update: Update, context: ContextTypes.DEFAULT
             await send_info(update, context, query.data)
         case MenuCallbackButtons.STUDSOVET_INFO:
             await send_info(update, context, query.data)
+        case MenuCallbackButtons.MANSARDA_INFO:
+            await send_info(update, context, query.data)
         case MenuCallbackButtons.PAYMENT:
             # await payment(update, context)
             await context.bot.send_message(text="Данная функция находится в разработке...",
                                            chat_id=update.effective_chat.id)
-        case MenuCallbackButtons.NOT_IMPLEMENTED:
-            await context.bot.send_message(text="Данная функция находится в разработке...",
-                                           chat_id=update.effective_chat.id)
+        case MenuCallbackButtons.PROFILE:
+            await show_profile(update, context)
+        case ChangeProfileCallbackButtons.CHANGE_NAME:
+            return await change_profile_functions.change_user_full_name(update, context)
+        case ChangeProfileCallbackButtons.CHANGE_ROOM:
+            return await change_profile_functions.change_user_room_number(update, context)
+        case ChangeProfileCallbackButtons.CHANGE_CORPUS:
+            return await change_profile_functions.change_user_corpus(update, context)
 
 
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -98,6 +109,9 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ],
         [
             InlineKeyboardButton(strings.STUDY_ROOM_BUTTON_TEXT, callback_data=MenuCallbackButtons.STUDY_ROOM_INFO),
+            InlineKeyboardButton(strings.MANSARDA_BUTTON_TEXT, callback_data=MenuCallbackButtons.MANSARDA_INFO)
+        ],
+        [
             InlineKeyboardButton(strings.STUDSOVET_BUTTON_TEXT, callback_data=MenuCallbackButtons.STUDSOVET_INFO)
         ],
         [
@@ -112,6 +126,7 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_info(update: Update, context: ContextTypes.DEFAULT_TYPE, info_type: str):
+    user = db_helper.get_user_by_id(update.effective_user.id)
     info_mapping = {
         MenuCallbackButtons.KOMENDANT_INFO: strings.KOMENDANT_INFO_TEXT,
         MenuCallbackButtons.KASTELANSHA_INFO: strings.KASTELANSHA_INFO_TEXT,
@@ -120,13 +135,19 @@ async def send_info(update: Update, context: ContextTypes.DEFAULT_TYPE, info_typ
         MenuCallbackButtons.GUESTS_INFO: strings.GUESTS_INFO_TEXT,
         MenuCallbackButtons.GYM_INFO: strings.GYM_INFO_TEXT,
         MenuCallbackButtons.STUDY_ROOM_INFO: strings.STUDY_ROOM_INFO_TEXT,
-        MenuCallbackButtons.STUDSOVET_INFO: strings.STUDSOVET_INFO_TEXT,
+        MenuCallbackButtons.MANSARDA_INFO: strings.MANSARDA_INFO_TEXT,
+        MenuCallbackButtons.STUDSOVET_INFO: "stud_info",
     }
 
     info_text = info_mapping.get(info_type)
 
+    if info_text == "stud_info":
+        if user.user_lives_in_b:
+            info_text = strings.STUDSOVET_INFO_B_TEXT
+        else:
+            info_text = strings.STUDSOVET_INFO_A_TEXT
+
     await context.bot.send_message(text=info_text, chat_id=update.effective_chat.id)
-    # return await info(update, context)
 
 
 async def unknown_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -134,3 +155,37 @@ async def unknown_callback_handler(update: Update, context: ContextTypes.DEFAULT
     await query.message.edit_reply_markup(None)
     await query.answer()
     return await start(update, context)
+
+
+async def show_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = db_helper.get_user_by_id(update.effective_user.id)
+    corpus = "А"
+    if user.user_lives_in_b:
+        corpus = "Б"
+
+    info_text = (f"Профиль: \n"
+                 f"ФИО: {utils.capitalize_full_name(user.user_full_name)}\n"
+                 f"Комната: {user.user_room}\n"
+                 f"Корпус: {corpus}")
+    keyboard = [
+        [
+            InlineKeyboardButton(strings.CHANGE_NAME_BUTTON_TEXT,
+                                 callback_data=ChangeProfileCallbackButtons.CHANGE_NAME)],
+        [
+            InlineKeyboardButton(strings.CHANGE_ROOM_BUTTON_TEXT,
+                                 callback_data=ChangeProfileCallbackButtons.CHANGE_ROOM)],
+        [
+            InlineKeyboardButton(strings.CHANGE_CORPUS_BUTTON_TEXT,
+                                 callback_data=ChangeProfileCallbackButtons.CHANGE_CORPUS)
+        ],
+        [
+            InlineKeyboardButton(strings.MAIN_MENU_BUTTON_TEXT, callback_data=MenuCallbackButtons.MAIN_MENU)
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await context.bot.send_message(text=info_text,
+                                   chat_id=update.effective_chat.id,
+                                   reply_markup=reply_markup)
+    return ConversationStates.MAIN_MENU
+
+

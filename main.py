@@ -4,6 +4,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler, \
     ConversationHandler
 
+import change_profile_functions
 import config
 import registration
 from enumerations import ConversationStates
@@ -47,6 +48,14 @@ def main() -> None:
             ConversationStates.REGISTRATION_CORPUS: [
                 MessageHandler(filters.TEXT, registration.choose_corpus),
                 MessageHandler(filters.COMMAND, registration.no_command),
+                CallbackQueryHandler(unknown_callback_handler)],
+
+            ConversationStates.CHANGE_FULL_NAME: [
+                MessageHandler(filters.TEXT, change_profile_functions.full_name_change_handler),
+                CallbackQueryHandler(unknown_callback_handler)],
+
+            ConversationStates.CHANGE_ROOM_NUMBER: [
+                MessageHandler(filters.TEXT, change_profile_functions.room_number_change_handler),
                 CallbackQueryHandler(unknown_callback_handler)],
         },
         fallbacks=[]

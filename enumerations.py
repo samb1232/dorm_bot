@@ -1,7 +1,6 @@
 class MenuCallbackButtons:
     MAIN_MENU = "main_menu"
     QUESTION = "question"
-    PAYMENT = "payment"
     PROFILE = "profile"
     INFO = "info"
     KOMENDANT_INFO = "komendant_info"
@@ -13,6 +12,9 @@ class MenuCallbackButtons:
     STUDY_ROOM_INFO = "study"
     STUDSOVET_INFO = "studsovet"
     MANSARDA_INFO = "mansarda"
+
+    PAYMENT = "payment"
+    SEND_CHECK = "send_check"
 
 
 class ChangeProfileCallbackButtons:

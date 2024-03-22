@@ -6,7 +6,6 @@ from googleapiclient.errors import HttpError
 
 import utils
 
-# usage
 logger = logging.getLogger(__name__)
 
 
@@ -27,24 +26,21 @@ class GoogleDriveAPI:
             return None
 
     @staticmethod
-    def upload_file(file_path, file_new_name):
+    def upload_file(file_path, file_name):
         creds = GoogleDriveAPI._authenticate()
         service = build("drive", "v3", credentials=creds)
 
         try:
-            extension = utils.get_extension_from_file_name(file_path)
             file_metadata = {
-                'name': file_new_name + "." + extension,
+                'name': file_name,
                 'parents': [GoogleDriveAPI.PARENT_FOLDER_ID]}
-            file = service.files().create(
+            service.files().create(
                 body=file_metadata,
                 media_body=file_path
             ).execute()
-            logging.info(f"File {file_new_name} uploaded successfully")
+            logging.info(f"File {file_name} uploaded successfully")
         except HttpError as error:
             logging.error(f"An error occurred: {error}")
-        except ValueError as e:
-            logging.error(f"Error finding file extension: {e}")
         except Exception as e:
             logging.error(f"Error uploading file: {e}")
 

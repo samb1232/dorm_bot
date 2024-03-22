@@ -6,6 +6,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 import change_profile_functions
 import config
+import payment_functions
 import registration
 from enumerations import ConversationStates
 from menu_functions import start, unknown_callback_handler, callback_buttons_manager
@@ -56,6 +57,12 @@ def main() -> None:
 
             ConversationStates.CHANGE_ROOM_NUMBER: [
                 MessageHandler(filters.TEXT, change_profile_functions.room_number_change_handler),
+                CallbackQueryHandler(unknown_callback_handler)],
+
+            ConversationStates.PAYMENT: [
+                MessageHandler(filters.ATTACHMENT, payment_functions.receive_check_file),
+                CommandHandler("cancel", payment_functions.cancel_sending_check),
+                MessageHandler(filters.ALL, payment_functions.unknown_message_handler),
                 CallbackQueryHandler(unknown_callback_handler)],
         },
         fallbacks=[]

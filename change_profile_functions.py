@@ -8,7 +8,7 @@ from enumerations import ConversationStates
 
 async def change_user_corpus(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = db_helper.get_user_by_id(update.effective_user.id)
-    db_helper.set_user_lives_in_b(user.user_id, not user.user_lives_in_b)
+    db_helper.set_user_lives_in_b(user.user_id, not user.lives_in_b)
     await context.bot.send_message(text=strings.CORPUS_CHANGED_TEXT,
                                    chat_id=update.effective_chat.id)
     return await menu_functions.show_profile(update, context)

@@ -32,8 +32,8 @@ class db_helper:
     @staticmethod
     def add_new_user(user_id: int, user_full_name: str = "", user_lives_in_b: bool = False, user_room: int = -1) -> None:
         logger.debug(f"Добавление нового пользователя с id = {user_id}")
-        new_user = User(user_id=user_id, user_full_name=user_full_name,
-                        user_lives_in_b=user_lives_in_b, user_room=user_room)
+        new_user = User(user_id=user_id, full_name=user_full_name,
+                        lives_in_b=user_lives_in_b, room_number=user_room)
         db_helper.session.add(new_user)
         db_helper.session.commit()
 
@@ -41,19 +41,19 @@ class db_helper:
     def set_user_full_name(user_id: int, user_full_name: str):
         logger.debug(f"Установка пользователю с id = {user_id} имя {user_full_name}")
         user = db_helper.get_user_by_id(user_id)
-        user.user_full_name = user_full_name
+        user.full_name = user_full_name
         db_helper.session.commit()
 
     @staticmethod
     def set_user_lives_in_b(user_id: int, user_lives_in_b: bool):
         logger.debug(f"Установка пользователю с id = {user_id} статус общежития Б: {user_lives_in_b}")
         user = db_helper.get_user_by_id(user_id)
-        user.user_lives_in_b = user_lives_in_b
+        user.lives_in_b = user_lives_in_b
         db_helper.session.commit()
 
     @staticmethod
     def set_user_room(user_id: int, user_room: int):
         logger.debug(f"Установка пользователю с id = {user_id} номер комнаты {user_room}")
         user = db_helper.get_user_by_id(user_id)
-        user.user_room = user_room
+        user.room_number = user_room
         db_helper.session.commit()

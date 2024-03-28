@@ -9,7 +9,7 @@ GREETING_TEXT: str = '''
 '''
 
 # Buttons text
-KOMENDANT_BUTTON_TEXT: str = "Коментдант"
+KOMENDANT_BUTTON_TEXT: str = "Комендант"
 KASTELANSHA_BUTTON_TEXT: str = "Кастелянша"
 SHOWER_BUTTON_TEXT: str = "Душ"
 LAUNDARY_BUTTON_TEXT: str = "Постирочная"

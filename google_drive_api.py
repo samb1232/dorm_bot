@@ -4,25 +4,24 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-import utils
 
 logger = logging.getLogger(__name__)
 
 
 class GoogleDriveAPI:
     SCOPES = ["https://www.googleapis.com/auth/drive"]
-    SERVICE_ACCOUNT_FILE = "google_drive_key.json"
+    CREDENTIALS_FILE = "google_drive_key.json"
     PARENT_FOLDER_ID = config.GD_PARENT_FOLDER_ID
 
     @staticmethod
     def _authenticate():
         try:
             credentials = service_account.Credentials.from_service_account_file(
-                GoogleDriveAPI.SERVICE_ACCOUNT_FILE,
+                GoogleDriveAPI.CREDENTIALS_FILE,
                 scopes=GoogleDriveAPI.SCOPES)
             return credentials
         except Exception as e:
-            logging.error(f"Error authenticating: {e}")
+            logger.error(f"Error authenticating: {e}")
             return None
 
     @staticmethod
@@ -38,10 +37,10 @@ class GoogleDriveAPI:
                 body=file_metadata,
                 media_body=file_path
             ).execute()
-            logging.info(f"File {file_name} uploaded successfully")
+            logger.info(f"File {file_name} uploaded successfully")
         except HttpError as error:
-            logging.error(f"An error occurred: {error}")
+            logger.error(f"An error occurred: {error}")
         except Exception as e:
-            logging.error(f"Error uploading file: {e}")
+            logger.error(f"Error uploading file: {e}")
 
 

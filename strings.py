@@ -122,7 +122,7 @@ ENTER_FULL_NAME_TEXT: str = """Введи своё полное имя в фор
 
 FULL_NAME_CHANGED_TEXT: str = "ФИО изменено!"
 
-ENTER_ROOM_NUMBER_TEXT: str = """Введи номер своей комнаты:"""
+ENTER_ROOM_NUMBER_TEXT: str = "Введи номер своей комнаты:"
 
 ROOM_NUMBER_CHANGED_TEXT: str = "Номер комнаты изменён!"
 

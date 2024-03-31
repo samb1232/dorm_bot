@@ -1,13 +1,12 @@
 import logging
 import os.path
-from datetime import datetime
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
 import menu_functions
 import strings
 import utils
-from database.db_operations import db_helper
+from database.db_operations import DbHelper
 from enumerations import ConversationStates, MenuCallbackButtons
 from google_drive_api import GoogleDriveAPI
 
@@ -18,8 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 async def payment_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    payment_info_text = (f"Твой долг составляет: скокато руб.\n"
-                         f"Если хочешь прикрепить чек, нажми на кнопку")
+    user = DbHelper.get_user_by_id(update.effective_user.id)
+    debt_amount = DbHelper.get_debt_by_name(user.full_name)
+
+    debt_str = "У тебя сейчас нет долга по оплате общежития.\n"
+
+    if debt_amount != 0:
+        debt_str = f"Твой долг составляет: {debt_amount} руб.\n"
+    payment_info_text = (debt_str + "Если хочешь прикрепить чек, нажми на кнопку")
     keyboard = [
         [
             InlineKeyboardButton(strings.SEND_CHECK_BUTTON_TEXT,
@@ -54,7 +59,7 @@ async def cancel_sending_check(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 async def receive_check_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = db_helper.get_user_by_id(update.effective_user.id)
+    user = DbHelper.get_user_by_id(update.effective_user.id)
 
     if update.message.document is not None:
         file_id = update.message.document.file_id

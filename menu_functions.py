@@ -7,18 +7,17 @@ import change_profile_functions
 import payment_functions
 import strings
 import utils
-from database.db_operations import db_helper
+from database.db_operations import DbHelper
 from enumerations import MenuCallbackButtons, ConversationStates, ChangeProfileCallbackButtons
-
 
 logger = logging.getLogger(__name__)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    if db_helper.get_user_by_id(update.effective_user.id) is None:
+    if DbHelper.get_user_by_id(update.effective_user.id) is None:
         logger.info(f"Добавление нового пользователя {update.effective_user.name} в базу данных")
 
-        db_helper.add_new_user(user_id=update.effective_user.id)
+        DbHelper.add_new_user(user_id=update.effective_user.id)
         await context.bot.send_message(text=strings.GREETING_TEXT,
                                        chat_id=update.effective_chat.id)
         return ConversationStates.REGISTRATION_FULL_NAME
@@ -32,9 +31,9 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         [
             InlineKeyboardButton(strings.INFO_TEXT, callback_data=MenuCallbackButtons.INFO)
         ],
-        [
-            InlineKeyboardButton(strings.QUESTION_BUTTON_TEXT, callback_data=MenuCallbackButtons.QUESTION)
-        ],
+        # [
+        #     InlineKeyboardButton(strings.QUESTION_BUTTON_TEXT, callback_data=MenuCallbackButtons.QUESTION)
+        # ],
         [
             InlineKeyboardButton(strings.PAYMENT_BUTTON_TEXT, callback_data=MenuCallbackButtons.PAYMENT)
         ],
@@ -128,7 +127,7 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_info(update: Update, context: ContextTypes.DEFAULT_TYPE, info_type: str) -> int:
-    user = db_helper.get_user_by_id(update.effective_user.id)
+    user = DbHelper.get_user_by_id(update.effective_user.id)
     info_mapping = {
         MenuCallbackButtons.KOMENDANT_INFO: strings.KOMENDANT_INFO_TEXT,
         MenuCallbackButtons.KASTELANSHA_INFO: strings.KASTELANSHA_INFO_TEXT,
@@ -161,7 +160,7 @@ async def unknown_callback_handler(update: Update, context: ContextTypes.DEFAULT
 
 
 async def show_profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    user = db_helper.get_user_by_id(update.effective_user.id)
+    user = DbHelper.get_user_by_id(update.effective_user.id)
     corpus = "А"
     if user.lives_in_b:
         corpus = "Б"

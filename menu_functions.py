@@ -53,45 +53,38 @@ async def callback_buttons_manager(update: Update, context: ContextTypes.DEFAULT
     query = update.callback_query
     await query.answer()
 
-    match query.data:
-        case MenuCallbackButtons.INFO:
-            return await info(update, context)
-        case MenuCallbackButtons.MAIN_MENU:
-            return await main_menu(update, context)
-        case MenuCallbackButtons.KOMENDANT_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.KASTELANSHA_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.SHOWER_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.LAUNDARY_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.GUESTS_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.QUESTION:
-            # await question(update, context)
-            await context.bot.send_message(text="Данная функция находится в разработке...",
-                                           chat_id=update.effective_chat.id)
-        case MenuCallbackButtons.GYM_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.STUDY_ROOM_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.STUDSOVET_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.MANSARDA_INFO:
-            return await send_info(update, context, query.data)
-        case MenuCallbackButtons.PAYMENT:
-            return await payment_functions.payment_info(update, context)
-        case MenuCallbackButtons.SEND_CHECK:
-            return await payment_functions.send_check(update, context)
-        case MenuCallbackButtons.PROFILE:
-            return await show_profile(update, context)
-        case ChangeProfileCallbackButtons.CHANGE_NAME:
-            return await change_profile_functions.change_user_full_name(update, context)
-        case ChangeProfileCallbackButtons.CHANGE_ROOM:
-            return await change_profile_functions.change_user_room_number(update, context)
-        case ChangeProfileCallbackButtons.CHANGE_CORPUS:
-            return await change_profile_functions.change_user_corpus(update, context)
+    query_data = query.data
+
+    if query_data == MenuCallbackButtons.INFO:
+        result = await info(update, context)
+    elif query_data == MenuCallbackButtons.MAIN_MENU:
+        result = await main_menu(update, context)
+    elif query_data in [MenuCallbackButtons.KOMENDANT_INFO, MenuCallbackButtons.KASTELANSHA_INFO,
+                        MenuCallbackButtons.SHOWER_INFO, MenuCallbackButtons.LAUNDARY_INFO,
+                        MenuCallbackButtons.GUESTS_INFO, MenuCallbackButtons.GYM_INFO,
+                        MenuCallbackButtons.STUDY_ROOM_INFO, MenuCallbackButtons.STUDSOVET_INFO,
+                        MenuCallbackButtons.MANSARDA_INFO]:
+        result = await send_info(update, context, query_data)
+    elif query_data == MenuCallbackButtons.QUESTION:
+        await context.bot.send_message(text="Данная функция находится в разработке...",
+                                       chat_id=update.effective_chat.id)
+        result = None
+    elif query_data == MenuCallbackButtons.PAYMENT:
+        result = await payment_functions.payment_info(update, context)
+    elif query_data == MenuCallbackButtons.SEND_CHECK:
+        result = await payment_functions.send_check(update, context)
+    elif query_data == MenuCallbackButtons.PROFILE:
+        result = await show_profile(update, context)
+    elif query_data == ChangeProfileCallbackButtons.CHANGE_NAME:
+        result = await change_profile_functions.change_user_full_name(update, context)
+    elif query_data == ChangeProfileCallbackButtons.CHANGE_ROOM:
+        result = await change_profile_functions.change_user_room_number(update, context)
+    elif query_data == ChangeProfileCallbackButtons.CHANGE_CORPUS:
+        result = await change_profile_functions.change_user_corpus(update, context)
+    else:
+        result = None
+
+    return result
 
 
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):

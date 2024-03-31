@@ -15,16 +15,12 @@ DATABASE_ENGINE = "sqlite:///database.db"
 
 
 class DbHelper:
-    @staticmethod
-    def get_database_session() -> Session:
-        logger.debug("Подключение к базе данных")
-        engine = db.create_engine(DATABASE_ENGINE)
+    logger.debug("Подключение к базе данных")
+    engine = db.create_engine(DATABASE_ENGINE)
 
-        db_base.Base.metadata.create_all(engine)
+    db_base.Base.metadata.create_all(engine)
 
-        return sessionmaker(bind=engine)()
-
-    session = get_database_session()
+    session = sessionmaker(bind=engine)()
 
     @staticmethod
     def get_user_by_id(user_id: int) -> User | None:
@@ -95,4 +91,3 @@ class DbHelper:
         debtors_list = DbHelper.session.query(Debtor).all()
 
         return debtors_list
-

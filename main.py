@@ -77,7 +77,7 @@ def main() -> None:
     bot_instance.application.add_handler(main_conversation_handler)
 
     notifications.start_schedule_functions()
-    threading.Thread(target=notifications.run_schedules).start()
+    threading.Thread(target=notifications.run_schedules, daemon=True).start()
 
     # Run the bot
     bot_instance.application.run_polling(allowed_updates=Update.ALL_TYPES)

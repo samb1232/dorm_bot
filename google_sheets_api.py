@@ -59,7 +59,11 @@ class GoogleSheetsAPI:
                 continue
             if row[2] == "" or row[0] == "":
                 continue
-            debtors[row[0].lower()] = row[2].replace(",", ".")
+
+            cleaned_string = ''.join([char for char in row[2] if char.isdigit() or char in ['.', ',', '-']]).replace(
+                ',', '.')
+
+            debtors[row[0].lower()] = float(cleaned_string)
 
         return debtors
 

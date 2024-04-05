@@ -20,7 +20,19 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("database.db_operations").setLevel(logging.DEBUG)
 logging.getLogger("excursion").setLevel(logging.DEBUG)
 
+
 logger = logging.getLogger(__name__)
+
+# Создание объекта для записи в файл
+file_handler = logging.FileHandler('logfile.log')
+file_handler.setLevel(logging.DEBUG)  # Уровень логирования для файла
+
+# Форматирование сообщений лога
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Добавление обработчика в логгер
+logging.getLogger().addHandler(file_handler)
 
 
 def main() -> None:

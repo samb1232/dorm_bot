@@ -63,7 +63,7 @@ class GoogleSheetsAPI:
             cleaned_string = ''.join([char for char in row[2] if char.isdigit() or char in ['.', ',', '-']]).replace(
                 ',', '.')
 
-            debtors[row[0].lower()] = float(cleaned_string)
+            debtors[row[0].lower().replace("ё", "е")] = float(cleaned_string)
 
         return debtors
 

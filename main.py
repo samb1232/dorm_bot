@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import threading
 
@@ -19,7 +20,6 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("database.db_operations").setLevel(logging.DEBUG)
 logging.getLogger("excursion").setLevel(logging.DEBUG)
-
 
 logger = logging.getLogger(__name__)
 
@@ -89,10 +89,13 @@ def main() -> None:
     bot_instance.application.add_handler(main_conversation_handler)
 
     notifications.start_schedule_functions()
-    threading.Thread(target=notifications.run_schedules, daemon=True).start()
-
+    threading.Thread(target=run_async_schedule, daemon=True).start()
     # Run the bot
     bot_instance.application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
+def run_async_schedule():
+    asyncio.run(notifications.run_schedules())
 
 
 if __name__ == "__main__":

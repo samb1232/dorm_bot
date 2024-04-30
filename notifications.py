@@ -1,7 +1,7 @@
 import asyncio
 import datetime
-import time
 
+import aioschedule
 import schedule
 
 import bot_instance
@@ -12,20 +12,19 @@ from google_sheets_api import GoogleSheetsAPI
 def start_schedule_functions():
     GoogleSheetsAPI.batch_debtors_from_sheets()
     schedule.every(12).hours.do(GoogleSheetsAPI.batch_debtors_from_sheets)
-
-    # schedule.every().day.at("17:02").do(send_notifications_to_all_debtors)
-    # schedule.every(30).seconds.do(send_notifications_to_all_debtors)
+    aioschedule.every().day.at("11:00").do(send_notifications_to_all_debtors)
 
 
-def run_schedules():
+async def run_schedules():
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        await aioschedule.run_pending()
+        await asyncio.sleep(1)
 
 
-def send_notifications_to_all_debtors():
+async def send_notifications_to_all_debtors():
     today = datetime.datetime.now()
-    if today.day not in [1, 5, 10, 15, 31]:
+    if today.day not in [1, 5, 10, 13]:
         return
 
     debtors_list = DbHelper.get_all_debtors()
@@ -34,7 +33,8 @@ def send_notifications_to_all_debtors():
         if user_id is None:
             continue
 
-        asyncio.run(bot_instance.bot.send_message(
-            text=f"Твой долг по оплате общежития составляет {debtor.debt_amount} руб. "
+        await bot_instance.bot.send_message(
+            text=f"Привет! У тебя долг по облате общежития. Он составляет {debtor.debt_amount} руб. "
                  f"Можешь оплатить его через главное меню, нажав на кнопку 'Оплата за общежитие'",
-            chat_id=user_id))
+            chat_id=user_id
+        )

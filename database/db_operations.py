@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 
 import sqlalchemy as db
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 
 from database.db_base import db_base
 from database.tables.debtors_table import Debtor
@@ -30,7 +30,10 @@ class DbHelper:
     @staticmethod
     def get_user_id_by_full_name(full_name: str) -> int | None:
         logger.debug(f"Получение id пользователя с именем {full_name}")
-        return DbHelper.session.query(User).filter(User.full_name == full_name).first()
+        user = DbHelper.session.query(User).filter(User.full_name == full_name).first()
+        if user:
+            return user.user_id  # Возвращаем первый элемент кортежа, который содержит id пользователя
+        return None
 
     @staticmethod
     def add_new_user(user_id: int, user_full_name: str = "", user_lives_in_b: bool = False,

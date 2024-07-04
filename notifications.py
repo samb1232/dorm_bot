@@ -6,6 +6,7 @@ import aioschedule
 import schedule
 
 import bot_instance
+import strings
 from database.db_operations import DbHelper
 from google_sheets_api import GoogleSheetsAPI
 
@@ -13,7 +14,7 @@ from google_sheets_api import GoogleSheetsAPI
 def start_schedule_functions():
     GoogleSheetsAPI.batch_debtors_from_sheets()
     schedule.every(12).hours.do(GoogleSheetsAPI.batch_debtors_from_sheets)
-    aioschedule.every().day.at("19:21").do(send_notifications_to_all_debtors)
+    aioschedule.every().day.at("10:00").do(send_notifications_to_all_debtors)
 
 
 async def run_schedules():
@@ -36,8 +37,7 @@ async def send_notifications_to_all_debtors():
 
         try:
             await bot_instance.bot.send_message(
-                text=f"Привет! У тебя долг по оплате общежития. Он составляет {debtor.debt_amount} руб. "
-                     f"Можешь оплатить его через главное меню, нажав на кнопку 'Оплата за общежитие'",
+                text=f"{strings.DEBT_NOTIFICATION_TEXT[0]}{debtor.debt_amount}{strings.DEBT_NOTIFICATION_TEXT[1]}",
                 chat_id=user_id
             )
         except Exception as e:

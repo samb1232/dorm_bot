@@ -54,12 +54,12 @@ class GoogleSheetsAPI:
         values_ab = values_a["values"] + values_b["values"]
 
         for row in values_ab:
-            if len(row) != 3:
+            if len(row) != 2:
                 continue
-            if row[2] == "" or row[0] == "":
+            if row[1] == "" or row[0] == "":
                 continue
 
-            cleaned_string = ''.join([char for char in row[2] if char.isdigit() or char in ['.', ',', '-']]).replace(
+            cleaned_string = ''.join([char for char in row[1] if char.isdigit() or char in ['.', ',', '-']]).replace(
                 ',', '.')
 
             debtors[row[0].lower().replace("ё", "е")] = float(cleaned_string)

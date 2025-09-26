@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-import logging
-
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 
 from database.db_base import db_base
 from database.tables.debtors_table import Debtor
 from database.tables.users_table import User
+from my_logger import get_logger
 
-logger = logging.getLogger(__name__)
+
+logger = get_logger(__name__)
 
 DATABASE_ENGINE = "sqlite:///database.db"
 

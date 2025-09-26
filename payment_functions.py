@@ -1,10 +1,10 @@
-import logging
 import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
 from config import Config
 import menu_functions
+from my_logger import get_logger
 import strings
 import utils
 from database.db_operations import DbHelper
@@ -14,7 +14,7 @@ from google_drive_api import GoogleDriveAPI
 ALLOWED_CHECK_EXTENSIONS = ["jpg", "png", "jpeg", "pdf"]
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 async def payment_info(update: Update, context: ContextTypes.DEFAULT_TYPE):

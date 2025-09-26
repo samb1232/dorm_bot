@@ -1,11 +1,11 @@
-import logging
 import apiclient.discovery
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
 from config import Config
 from database.db_operations import DbHelper
+from my_logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class GoogleSheetsAPI:
@@ -25,7 +25,7 @@ class GoogleSheetsAPI:
             )
             return credentials
         except Exception as e:
-            logging.error(f"Error authenticating: {e}")
+            logger.error(f"Error authenticating: {e}")
             return None
 
     @staticmethod

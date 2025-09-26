@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import threading
 
 from telegram import Update
@@ -8,31 +7,15 @@ from telegram.ext import CommandHandler, MessageHandler, filters, CallbackQueryH
 
 import bot_instance
 import change_profile_functions
+from my_logger import get_logger
 import notifications
 import payment_functions
 import registration
 from enumerations import ConversationStates
 from menu_functions import start, unknown_callback_handler, callback_buttons_manager
 
-# Enable logging
-logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
-# set higher logging level for httpx to avoid all GET and POST requests being logged
-logging.getLogger("httpx").setLevel(logging.WARNING)
-logging.getLogger("database.db_operations").setLevel(logging.DEBUG)
-logging.getLogger("excursion").setLevel(logging.DEBUG)
 
-logger = logging.getLogger(__name__)
-
-# Создание объекта для записи в файл
-file_handler = logging.FileHandler('logfile.log')
-file_handler.setLevel(logging.DEBUG)  # Уровень логирования для файла
-
-# Форматирование сообщений лога
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-
-# Добавление обработчика в логгер
-logging.getLogger().addHandler(file_handler)
+logger = get_logger(__name__)
 
 
 def main() -> None:
@@ -91,6 +74,7 @@ def main() -> None:
     notifications.start_schedule_functions()
     threading.Thread(target=run_async_schedule, daemon=True).start()
     # Run the bot
+    logger.info("Бот запущен")
     bot_instance.application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 

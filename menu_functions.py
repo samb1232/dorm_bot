@@ -1,16 +1,16 @@
-import logging
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
 import change_profile_functions
+from my_logger import get_logger
 import payment_functions
 import strings
 import utils
 from database.db_operations import DbHelper
 from enumerations import MenuCallbackButtons, ConversationStates, ChangeProfileCallbackButtons
 
-logger = logging.getLogger(__name__)
+
+logger = get_logger(__name__)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -31,9 +31,6 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         [
             InlineKeyboardButton(strings.INFO_TEXT, callback_data=MenuCallbackButtons.INFO)
         ],
-        # [
-        #     InlineKeyboardButton(strings.QUESTION_BUTTON_TEXT, callback_data=MenuCallbackButtons.QUESTION)
-        # ],
         [
             InlineKeyboardButton(strings.PAYMENT_BUTTON_TEXT, callback_data=MenuCallbackButtons.PAYMENT)
         ],

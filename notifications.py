@@ -1,14 +1,17 @@
 import asyncio
 import datetime
-import logging
 
 import aioschedule
 import schedule
 
 import bot_instance
+from my_logger import get_logger
 import strings
 from database.db_operations import DbHelper
 from google_sheets_api import GoogleSheetsAPI
+
+
+logger = get_logger(__name__)
 
 
 def start_schedule_functions():
@@ -41,4 +44,4 @@ async def send_notifications_to_all_debtors():
                 chat_id=user_id
             )
         except Exception as e:
-            logging.warning(e)
+            logger.warning(e)

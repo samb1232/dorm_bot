@@ -2,11 +2,10 @@ import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
-from config.config import Config
+from configs.config import Config
 from states_functions import menu_functions
 from configs.my_logger import get_logger
 import strings
-import utils
 from database.db_operations import DbHelper
 from enums.enumerations import ConversationStates, MenuCallbackButtons
 from google_api.google_drive_api import GoogleDriveAPI

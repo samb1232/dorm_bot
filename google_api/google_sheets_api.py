@@ -1,7 +1,7 @@
 import apiclient.discovery
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
-from config.config import Config
+from configs.config import Config
 from database.db_operations import DbHelper
 from configs.my_logger import get_logger
 

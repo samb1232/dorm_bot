@@ -10,6 +10,7 @@ import utils
 from database.db_operations import DbHelper
 from enumerations import ConversationStates, MenuCallbackButtons
 from google_api.google_drive_api import GoogleDriveAPI
+from utils.file_utils import get_extension_from_file_name
 
 ALLOWED_CHECK_EXTENSIONS = ["jpg", "png", "jpeg", "pdf"]
 
@@ -88,7 +89,7 @@ async def receive_check_file(update: Update, context: ContextTypes.DEFAULT_TYPE)
                                        chat_id=update.effective_chat.id)
         return ConversationStates.PAYMENT
 
-    extension = utils.get_extension_from_file_name(file_name)
+    extension = get_extension_from_file_name(file_name)
     if extension not in ALLOWED_CHECK_EXTENSIONS:
         await context.bot.send_message(text=strings.INCORRECT_FILE_TEXT,
                                        chat_id=update.effective_chat.id)

@@ -1,9 +1,8 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-import change_profile_functions
+from states_functions import change_profile_functions, payment_functions
 from my_logger import get_logger
-import payment_functions
 import strings
 import utils
 from database.db_operations import DbHelper

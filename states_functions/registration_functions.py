@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-import menu_functions
+from states_functions import menu_functions
 from database.db_operations import DbHelper
 from enumerations import ConversationStates
 from my_logger import get_logger

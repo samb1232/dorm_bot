@@ -1,7 +1,7 @@
 from telegram import Bot
 from telegram.ext import Application
-import config
+from config import Config
 
 # Create the Application
-application = Application.builder().token(config.API_TOKEN).build()
+application = Application.builder().token(Config.API_TOKEN).build()
 bot: Bot = application.bot

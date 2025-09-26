@@ -4,7 +4,7 @@ import apiclient.discovery
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
 
-import config
+from config import Config
 from database.db_operations import DbHelper
 
 logger = logging.getLogger(__name__)
@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 class GoogleSheetsAPI:
     CREDENTIALS_FILE = 'google_drive_key.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-    SPREADSHEETS_ID = config.GS_SPREADSHEETS_ID
 
     LIST_A = "ДОЛГ 5а"
     LIST_B = "ДОЛГ 5б"
@@ -40,13 +39,13 @@ class GoogleSheetsAPI:
         service = apiclient.discovery.build('sheets', 'v4', http=httpAuth)
 
         values_a = service.spreadsheets().values().get(
-            spreadsheetId=config.GS_SPREADSHEETS_ID,
+            spreadsheetId=Config.GS_SPREADSHEETS_ID,
             range=f'{GoogleSheetsAPI.LIST_A}!{GoogleSheetsAPI.RANGE}',
             majorDimension='ROWS'
         ).execute()
 
         values_b = service.spreadsheets().values().get(
-            spreadsheetId=config.GS_SPREADSHEETS_ID,
+            spreadsheetId=Config.GS_SPREADSHEETS_ID,
             range=f'{GoogleSheetsAPI.LIST_B}!{GoogleSheetsAPI.RANGE}',
             majorDimension='ROWS'
         ).execute()

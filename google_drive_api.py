@@ -1,5 +1,5 @@
 import logging
-import config
+from config import Config
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class GoogleDriveAPI:
     SCOPES = ["https://www.googleapis.com/auth/drive"]
     CREDENTIALS_FILE = "google_drive_key.json"
-    PARENT_FOLDER_ID = config.GD_PARENT_FOLDER_ID
+    PARENT_FOLDER_ID = Config.GD_PARENT_FOLDER_ID
 
     @staticmethod
     def _authenticate():

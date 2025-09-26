@@ -1,9 +1,9 @@
 import logging
-import os.path
+import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
-import config
+from config import Config
 import menu_functions
 import strings
 import utils
@@ -28,7 +28,7 @@ async def payment_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     payment_info_text = (debt_str + "Если хочешь прикрепить чек, нажми на кнопку")
     keyboard = [
         [
-            InlineKeyboardButton("Таблица долгов", url=f'https://docs.google.com/spreadsheets/d/{config.GS_SPREADSHEETS_ID}')
+            InlineKeyboardButton("Таблица долгов", url=f'https://docs.google.com/spreadsheets/d/{Config.GS_SPREADSHEETS_ID}')
         ],
         [
             InlineKeyboardButton(strings.SEND_CHECK_BUTTON_TEXT,

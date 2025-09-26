@@ -2,9 +2,9 @@ import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
-from config import Config
+from config.config import Config
 from states_functions import menu_functions
-from my_logger import get_logger
+from configs.my_logger import get_logger
 import strings
 import utils
 from database.db_operations import DbHelper

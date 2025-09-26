@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from database.db_base import db_base
 from database.tables.debtors_table import Debtor
 from database.tables.users_table import User
-from my_logger import get_logger
+from configs.my_logger import get_logger
 
 
 logger = get_logger(__name__)

@@ -5,7 +5,7 @@ import aioschedule
 import schedule
 
 import bot_instance
-from my_logger import get_logger
+from configs.my_logger import get_logger
 import strings
 from database.db_operations import DbHelper
 from google_api.google_sheets_api import GoogleSheetsAPI

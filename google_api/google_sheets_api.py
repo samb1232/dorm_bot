@@ -1,9 +1,9 @@
 import apiclient.discovery
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
-from config import Config
+from config.config import Config
 from database.db_operations import DbHelper
-from my_logger import get_logger
+from configs.my_logger import get_logger
 
 logger = get_logger(__name__)
 

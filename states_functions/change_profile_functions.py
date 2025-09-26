@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes
 from states_functions import menu_functions
 import strings
 from database.db_operations import DbHelper
-from enumerations import ConversationStates
+from enums.enumerations import ConversationStates
 
 async def change_user_corpus(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = DbHelper.get_user_by_id(update.effective_user.id)

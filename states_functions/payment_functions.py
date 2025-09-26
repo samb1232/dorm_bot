@@ -8,7 +8,7 @@ from configs.my_logger import get_logger
 import strings
 import utils
 from database.db_operations import DbHelper
-from enumerations import ConversationStates, MenuCallbackButtons
+from enums.enumerations import ConversationStates, MenuCallbackButtons
 from google_api.google_drive_api import GoogleDriveAPI
 from utils.file_utils import get_extension_from_file_name
 

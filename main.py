@@ -8,8 +8,8 @@ from telegram.ext import CommandHandler, MessageHandler, filters, CallbackQueryH
 import bot_instance
 from states_functions import change_profile_functions, payment_functions, registration_functions, menu_functions
 from configs.my_logger import get_logger
-import notifications
-from enumerations import ConversationStates
+from notifications import notifications
+from enums.enumerations import ConversationStates
 
 
 logger = get_logger(__name__)

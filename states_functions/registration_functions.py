@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes
 
 from states_functions import menu_functions
 from database.db_operations import DbHelper
-from enumerations import ConversationStates
+from enums.enumerations import ConversationStates
 from configs.my_logger import get_logger
 
 

@@ -5,7 +5,7 @@ from states_functions import change_profile_functions, payment_functions
 from configs.my_logger import get_logger
 import strings
 from database.db_operations import DbHelper
-from enumerations import MenuCallbackButtons, ConversationStates, ChangeProfileCallbackButtons
+from enums.enumerations import MenuCallbackButtons, ConversationStates, ChangeProfileCallbackButtons
 from utils.name_utils import capitalize_full_name
 
 

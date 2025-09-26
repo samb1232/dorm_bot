@@ -9,7 +9,7 @@ import strings
 import utils
 from database.db_operations import DbHelper
 from enumerations import ConversationStates, MenuCallbackButtons
-from google_drive_api import GoogleDriveAPI
+from google_api.google_drive_api import GoogleDriveAPI
 
 ALLOWED_CHECK_EXTENSIONS = ["jpg", "png", "jpeg", "pdf"]
 

@@ -1,9 +1,7 @@
 import logging
-
 import apiclient.discovery
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
-
 from config import Config
 from database.db_operations import DbHelper
 
@@ -11,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class GoogleSheetsAPI:
-    CREDENTIALS_FILE = 'google_drive_key.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
     LIST_A = "ДОЛГ 5а"
     LIST_B = "ДОЛГ 5б"
 
@@ -22,9 +18,11 @@ class GoogleSheetsAPI:
     @staticmethod
     def _authenticate():
         try:
-            credentials = ServiceAccountCredentials.from_json_keyfile_name(
-                GoogleSheetsAPI.CREDENTIALS_FILE,
-                GoogleSheetsAPI.SCOPES)
+            credentials_dict = Config.get_google_credentials()
+            credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+                credentials_dict,
+                GoogleSheetsAPI.SCOPES
+            )
             return credentials
         except Exception as e:
             logging.error(f"Error authenticating: {e}")

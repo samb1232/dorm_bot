@@ -1,6 +1,3 @@
-import asyncio
-import threading
-
 from telegram import Update
 from telegram.ext import CommandHandler, MessageHandler, filters, CallbackQueryHandler, \
     ConversationHandler
@@ -13,6 +10,26 @@ from enums.enumerations import ConversationStates
 
 
 logger = get_logger(__name__)
+
+
+async def post_init(application) -> None:
+    logger.info("Инициализация планировщика задач")
+
+    scheduler = notifications.setup_scheduler()
+
+    scheduler.start()
+    logger.info("Планировщик запущен")
+
+    logger.info("Выполнение начальной синхронизации должников")
+    await notifications.batch_debtors_async()
+
+
+async def post_shutdown(application) -> None:
+    logger.info("Остановка планировщика задач")
+
+    if notifications.scheduler is not None:
+        notifications.scheduler.shutdown(wait=True)
+        logger.info("Планировщик остановлен")
 
 
 def main() -> None:
@@ -68,15 +85,13 @@ def main() -> None:
 
     bot_instance.application.add_handler(main_conversation_handler)
 
-    notifications.start_schedule_functions()
-    threading.Thread(target=run_async_schedule, daemon=True).start()
-    # Run the bot
+    # Добавляем хуки для инициализации и остановки планировщика
+    bot_instance.application.post_init = post_init
+    bot_instance.application.post_shutdown = post_shutdown
+
+    # Запускаем бота
     logger.info("Бот запущен")
     bot_instance.application.run_polling(allowed_updates=Update.ALL_TYPES)
-
-
-def run_async_schedule():
-    asyncio.run(notifications.run_schedules())
 
 
 if __name__ == "__main__":

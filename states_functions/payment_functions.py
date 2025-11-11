@@ -25,7 +25,8 @@ async def payment_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if debt_amount != 0:
         debt_str = f"Твой долг составляет: {debt_amount} руб.\n"
-    payment_info_text = (debt_str + "Если хочешь прикрепить чек, нажми на кнопку")
+    payment_info_text = (debt_str + "Если хочешь прикрепить чек, нажми на кнопку.\n" + 
+                         "\nГайд на оплату: https://vk.com/@spbstu_5a-oplata-obschezhitiyakratkii-gaid")
     keyboard = [
         [
             InlineKeyboardButton("Таблица долгов", url=f'https://docs.google.com/spreadsheets/d/{Config.GS_SPREADSHEETS_ID}')

@@ -60,6 +60,12 @@ cd dorm_bot
 pip install -r requirements.txt
 ```
 
+Для запуска тестов установите зависимости из файла `requirements.test.txt`:
+
+```bash
+pip install -r requirements.test.txt
+```
+
 ---
 
 ## Запуск бота
@@ -117,5 +123,5 @@ kill <process_id>
 
 - Бот использует Google Drive и Google Sheets API для работы с файлами.
 - Все конфиденциальные данные хранятся в `.env`.
-- Все текстовые данные хранятся в `string.py`.
+- Все текстовые данные хранятся в `strings.py`.
 

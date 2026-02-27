@@ -69,11 +69,19 @@ class TestGetExtensionFromFileName:
         """Test filename without extension (edge case)"""
         # This should return the filename itself as there's no dot
         result = get_extension_from_file_name("filename")
-        assert result == "filename"
+        assert result == ""
+        
+    def test_get_extesion_dot_env(self):
+        result = get_extension_from_file_name(".env")
+        assert result == ""
+
+    def test_get_extesion_gitignore(self):
+        result = get_extension_from_file_name(".gitignore")
+        assert result == ""
 
     def test_get_extension_dot_at_start(self):
         """Test filename starting with dot (hidden file)"""
-        assert get_extension_from_file_name(".gitignore") == "gitignore"
+        assert get_extension_from_file_name(".gitignore") == ""
         assert get_extension_from_file_name(".env.local") == "local"
 
     def test_get_extension_only_dot(self):
